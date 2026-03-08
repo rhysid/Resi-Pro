@@ -1,0 +1,14 @@
+<%- include('../partials/top') %>
+<section class="auth-card">
+  <h1>Login Token</h1>
+  <p>Masukkan token dari Telegram bot (<code>/token</code>).</p>
+  <% if (errors) { %>
+    <div class="alert alert-error"><%= errors %></div>
+  <% } %>
+  <form method="post" action="/login" class="form-stack">
+    <label for="token">Token</label>
+    <input id="token" name="token" type="text" value="<%= form.token || '' %>" required placeholder="Paste token di sini" />
+    <button type="submit" class="btn">Login</button>
+  </form>
+</section>
+<%- include('../partials/bottom') %>

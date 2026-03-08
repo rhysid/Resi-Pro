@@ -1,0 +1,15 @@
+<%- include('../partials/top') %>
+<section class="card narrow">
+  <h1>Tambah Resi</h1>
+  <% if (errors) { %>
+    <div class="alert alert-error"><%= errors %></div>
+  <% } %>
+  <form method="post" action="/resi/add" class="form-stack">
+    <label for="resi_id">Resi ID</label>
+    <input id="resi_id" name="resi_id" type="text" value="<%= form.resi_id || '' %>" required />
+    <label for="notes">Catatan (opsional)</label>
+    <textarea id="notes" name="notes" rows="4"><%= form.notes || '' %></textarea>
+    <button type="submit" class="btn">Simpan</button>
+  </form>
+</section>
+<%- include('../partials/bottom') %>

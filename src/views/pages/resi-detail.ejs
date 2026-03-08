@@ -1,0 +1,21 @@
+<%- include('../partials/top') %>
+<section class="card narrow">
+  <h1>Detail Resi</h1>
+  <dl class="detail-grid">
+    <dt>ID</dt><dd><%= resi.id %></dd>
+    <dt>Resi ID</dt><dd><%= resi.resi_id %></dd>
+    <dt>Status</dt>
+    <dd>
+      <span class="badge <%= Number(resi.status_scan) === 1 ? 'badge-done' : 'badge-pending' %>">
+        <%= Number(resi.status_scan) === 1 ? 'Selesai' : 'Belum Scan' %>
+      </span>
+    </dd>
+    <dt>Scanned At</dt><dd><%= resi.scanned_at ? new Date(resi.scanned_at).toLocaleString() : '-' %></dd>
+    <dt>Source</dt><dd><%= resi.source_input %></dd>
+    <dt>Created By</dt><dd><%= resi.created_by || '-' %></dd>
+    <dt>Notes</dt><dd><%= resi.notes || '-' %></dd>
+    <dt>Created At</dt><dd><%= new Date(resi.created_at).toLocaleString() %></dd>
+    <dt>Updated At</dt><dd><%= new Date(resi.updated_at).toLocaleString() %></dd>
+  </dl>
+</section>
+<%- include('../partials/bottom') %>

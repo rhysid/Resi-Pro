@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> - Aresiku</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-wrap">
+      <a href="/dashboard" class="brand">Aresiku</a>
+      <% if (currentUser) { %>
+        <nav class="nav-links">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/resi/add">Tambah Resi</a>
+          <a href="/resi/belum-scan">Belum Scan</a>
+          <a href="/resi/selesai">Selesai</a>
+          <a href="/activity-logs">Activity</a>
+          <form method="post" action="/logout" class="inline-form">
+            <button type="submit" class="btn btn-outline">Logout</button>
+          </form>
+        </nav>
+      <% } %>
+    </div>
+  </header>
+
+  <main class="container page">
+    <% if (flash) { %>
+      <div class="alert <%= flash.type === 'error' ? 'alert-error' : 'alert-success' %>">
+        <%= flash.message %>
+      </div>
+    <% } %>
+
+    <%- body %>
+  </main>
+</body>
+</html>

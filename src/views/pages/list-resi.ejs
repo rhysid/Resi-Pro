@@ -1,0 +1,134 @@
+<%
+  const rows = list.data || [];
+  const totalPages = list.total_pages || 1;
+  const currentPage = list.page || 1;
+  const basePath = status === 'selesai' ? '/resi/selesai' : '/resi/belum-scan';
+  const buildHref = (page) => `${basePath}?q=${encodeURIComponent(query.q || '')}&sort=${encodeURIComponent(query.sort || 'newest')}&limit=${Number(query.limit || 10)}&page=${page}`;
+  const hasRows = rows.length > 0;
+%>
+<%- include('../partials/top') %>
+<section class="card">
+  <div class="section-title split">
+    <h1><%= heading %></h1>
+    <div class="status-switch">
+      <a href="/resi/belum-scan" class="<%= status === 'belum-scan' ? 'active' : '' %>">Belum Scan</a>
+      <a href="/resi/selesai" class="<%= status === 'selesai' ? 'active' : '' %>">Selesai</a>
+    </div>
+  </div>
+
+  <form method="get" action="<%= basePath %>" class="filter-form">
+    <input type="text" name="q" placeholder="Cari resi_id" value="<%= query.q || '' %>" />
+    <select name="sort">
+      <option value="newest" <%= query.sort === 'newest' ? 'selected' : '' %>>Terbaru</option>
+      <option value="oldest" <%= query.sort === 'oldest' ? 'selected' : '' %>>Terlama</option>
+    </select>
+    <select name="limit">
+      <option value="10" <%= Number(query.limit) === 10 ? 'selected' : '' %>>10 / halaman</option>
+      <option value="20" <%= Number(query.limit) === 20 ? 'selected' : '' %>>20 / halaman</option>
+      <option value="50" <%= Number(query.limit) === 50 ? 'selected' : '' %>>50 / halaman</option>
+    </select>
+    <button class="btn" type="submit">Terapkan</button>
+  </form>
+
+  <section
+    class="search-card"
+    data-list-search
+    data-status="<%= status %>"
+  >
+    <div class="search-card-head">
+      <h2>Search Resi by ID</h2>
+      <a href="<%= basePath %>" class="btn btn-outline">Reset Search</a>
+    </div>
+    <form class="search-inline-form" autocomplete="off">
+      <label for="resi-search-input" class="sr-only">Cari Resi ID</label>
+      <input
+        id="resi-search-input"
+        type="search"
+        placeholder="Ketik resi ID..."
+        data-search-input
+        value=""
+      />
+      <button type="button" class="btn btn-outline" data-search-clear>Clear</button>
+    </form>
+    <p class="search-help">Filter instan pada data halaman ini. Klik detail untuk cek data lengkap.</p>
+    <p class="empty search-empty" data-search-empty hidden>
+      Resi dengan ID tersebut belum ditemukan di halaman ini.
+    </p>
+  </section>
+
+  <% if (!hasRows) { %>
+    <p class="empty">Data kosong.</p>
+  <% } %>
+
+  <div class="table-wrap desktop-table <%= hasRows ? '' : 'hidden' %>" data-search-container>
+    <table>
+      <thead>
+        <tr>
+          <th>Resi</th>
+          <th>ID Label</th>
+          <th>Status</th>
+          <th>Scan At</th>
+          <th>Dibuat</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% rows.forEach((row) => { %>
+          <tr data-row-id="<%= String(row.id || '') %>" data-row-resi="<%= String(row.resi_id || '') %>">
+            <td><%= row.resi_id || '-' %></td>
+            <td><%= row.id || '-' %></td>
+            <td>
+              <span class="badge <%= Number(row.status_scan) === 1 ? 'badge-done' : 'badge-pending' %>">
+                <%= Number(row.status_scan) === 1 ? 'Selesai' : 'Belum Scan' %>
+              </span>
+            </td>
+            <td><%= row.scanned_at ? new Date(row.scanned_at).toLocaleString() : '-' %></td>
+            <td><%= row.created_at ? new Date(row.created_at).toLocaleString() : '-' %></td>
+            <td>
+              <% if (row.id) { %>
+                <a href="/resi/<%= row.id %>" class="btn btn-outline">Detail</a>
+              <% } else { %>
+                <span class="empty">ID tidak tersedia</span>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mobile-list <%= hasRows ? '' : 'hidden' %>" data-search-mobile-container>
+    <% rows.forEach((row) => { %>
+      <article class="resi-item" data-row-id="<%= String(row.id || '') %>" data-row-resi="<%= String(row.resi_id || '') %>">
+        <div class="resi-item-header">
+          <strong><%= row.resi_id || '-' %></strong>
+          <span class="badge <%= Number(row.status_scan) === 1 ? 'badge-done' : 'badge-pending' %>">
+            <%= Number(row.status_scan) === 1 ? 'Selesai' : 'Belum Scan' %>
+          </span>
+        </div>
+        <p><small>ID Label</small><br><%= row.id || '-' %></p>
+        <p><small>Scan At</small><br><%= row.scanned_at ? new Date(row.scanned_at).toLocaleString() : '-' %></p>
+        <p><small>Dibuat</small><br><%= row.created_at ? new Date(row.created_at).toLocaleString() : '-' %></p>
+        <% if (row.id) { %>
+          <a href="/resi/<%= row.id %>" class="btn btn-outline">Detail</a>
+        <% } else { %>
+          <span class="empty">ID tidak tersedia</span>
+        <% } %>
+      </article>
+    <% }) %>
+  </div>
+
+  <div class="pagination <%= hasRows ? '' : 'hidden' %>" data-search-pagination>
+    <span>Halaman <%= currentPage %> / <%= totalPages %></span>
+    <div>
+      <% if (currentPage > 1) { %>
+        <a href="<%= buildHref(currentPage - 1) %>" class="btn btn-outline">Prev</a>
+      <% } %>
+      <% if (currentPage < totalPages) { %>
+        <a href="<%= buildHref(currentPage + 1) %>" class="btn btn-outline">Next</a>
+      <% } %>
+    </div>
+  </div>
+</section>
+<script src="/assets/js/list-resi.js"></script>
+<%- include('../partials/bottom') %>

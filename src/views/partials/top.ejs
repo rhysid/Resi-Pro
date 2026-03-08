@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b4d45" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Aresiku" />
+  <title><%= title %> - Aresiku</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-wrap">
+      <a href="/dashboard" class="brand">Aresiku</a>
+      <% if (currentUser) { %>
+        <form method="post" action="/logout" class="inline-form hide-mobile">
+          <button type="submit" class="btn btn-outline">Logout</button>
+        </form>
+      <% } %>
+    </div>
+    <% if (currentUser) { %>
+      <nav class="desktop-nav container">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/resi/add">Tambah Resi</a>
+        <a href="/resi/belum-scan">Belum Scan</a>
+        <a href="/resi/selesai">Selesai</a>
+        <a href="/scan">Scan QR</a>
+        <a href="/activity-logs">Activity</a>
+      </nav>
+    <% } %>
+  </header>
+
+  <main class="container page">
+    <% if (flash) { %>
+      <div class="alert <%= flash.type === 'error' ? 'alert-error' : 'alert-success' %>">
+        <%= flash.message %>
+      </div>
+    <% } %>

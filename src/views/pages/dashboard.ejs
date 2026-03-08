@@ -1,0 +1,33 @@
+<%- include('../partials/top') %>
+<section class="grid-cards">
+  <article class="card stat">
+    <p>Total Resi</p>
+    <h2><%= summary.total_resi %></h2>
+  </article>
+  <article class="card stat pending">
+    <p>Total Belum Scan</p>
+    <h2><%= summary.total_belum_scan %></h2>
+  </article>
+  <article class="card stat done">
+    <p>Total Selesai</p>
+    <h2><%= summary.total_selesai %></h2>
+  </article>
+</section>
+
+<section class="card">
+  <div class="section-title">
+    <h3>Recent Activity</h3>
+  </div>
+  <% if (recentActivity.length === 0) { %>
+    <p class="empty">Belum ada aktivitas.</p>
+  <% } %>
+  <ul class="activity-list">
+    <% recentActivity.forEach((item) => { %>
+      <li>
+        <strong><%= item.event_type %></strong> - <%= item.description %>
+        <span><%= new Date(item.created_at).toLocaleString() %></span>
+      </li>
+    <% }) %>
+  </ul>
+</section>
+<%- include('../partials/bottom') %>

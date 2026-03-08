@@ -1,0 +1,37 @@
+<%- include('../partials/top') %>
+<section class="card scan-page" data-scan-page>
+  <div class="section-title split">
+    <h1>Scan QR Resi</h1>
+    <div class="scan-actions">
+      <button type="button" class="btn" data-scan-start>Mulai Scan</button>
+      <button type="button" class="btn btn-outline" data-scan-stop disabled>Stop Scan</button>
+      <button type="button" class="btn btn-outline" data-scan-reset disabled>Scan Lagi</button>
+    </div>
+  </div>
+
+  <p class="scan-intro">
+    Arahkan kamera ke QR label. QR harus berisi <code>resi id</code>. Setelah terbaca, sistem akan memproses status ke kategori selesai.
+  </p>
+
+  <div class="scan-camera-controls">
+    <label for="camera-select">Pilih Kamera</label>
+    <select id="camera-select" data-camera-select disabled>
+      <option value="">Memuat daftar kamera...</option>
+    </select>
+  </div>
+
+  <div class="scan-box">
+    <div id="scan-reader" class="scan-reader" aria-live="polite"></div>
+  </div>
+
+  <div class="scan-status-wrap">
+    <p class="scan-status" data-scan-status>Scanner belum aktif.</p>
+    <div class="alert alert-error hidden" data-scan-error></div>
+    <div class="alert alert-success hidden" data-scan-success></div>
+    <div class="scan-summary hidden" data-scan-summary></div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="/assets/js/scan.js"></script>
+<%- include('../partials/bottom') %>
